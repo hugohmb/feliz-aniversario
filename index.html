@@ -6,45 +6,43 @@
   <title>Cartão de Aniversário</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
   <style>
-    body, html {
+    html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       background: #000;
+      overflow: hidden;
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
     }
+  
     .swiper {
       width: 100%;
-      height: 100vh;
+      height: 100dvh; /* corrige o uso de altura em dispositivos móveis */
     }
+  
     .swiper-slide {
       display: flex;
       align-items: center;
       justify-content: center;
       background: #fff;
     }
-    .swiper-slide video, .swiper-slide img {
+  
+    .swiper-slide video,
+    .swiper-slide img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
-
-    @media (max-width: 320px) {
-      .swiper { height: 60vh; }
-    }
-    @media (max-width: 375px) {
-      .swiper { height: 70vh; }
-    }
+  
+    /* Media Queries mantidas, mas agora só complementares */
     @media (max-width: 414px) {
-      .swiper { height: 75vh; }
-    }
-    @media (min-width: 667px) {
-      .swiper { height: 80vh; }
-    }
-
-    body {
-      padding-top: env(safe-area-inset-top);
+      .swiper {
+        height: 100dvh;
+      }
     }
   </style>
+  
 </head>
 <body>
 
