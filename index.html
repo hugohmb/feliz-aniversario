@@ -1,46 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Cartão de Aniversário</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
   <style>
-    /* 1) Reset e área segura */
-    *, *::before, *::after {
-      box-sizing: border-box;
-    }
-    html, body {
+    body, html {
       margin: 0;
       padding: 0;
+      height: 100%;
       background: #000;
-      /* padding para notch em iOS */
-      padding-top: env(safe-area-inset-top);
-      padding-bottom: env(safe-area-inset-bottom);
-      overflow: hidden;
     }
 
-    /* 2) Definindo a altura real via variável CSS --vh */
-    :root {
-      --vh: 1vh;
-    }
-
-    /* 3) Swiper ocupa 100 * variável real de viewport */
+    /* Ajuste para iPhones antigos e novos */
     .swiper {
       width: 100%;
-      height: calc(var(--vh) * 100);
+      height: 100vh;
+      height: calc(var(--vh, 1vh) * 100); /* Garantir compatibilidade com dispositivos antigos e novos */
     }
 
+    /* Ajustes para dispositivos pequenos (como iPhones antigos) */
+    @media (max-width: 320px) {
+      .swiper { height: 60vh; }
+    }
+    @media (max-width: 375px) {
+      .swiper { height: 70vh; }
+    }
+    @media (max-width: 414px) {
+      .swiper { height: 75vh; }
+    }
+    @media (min-width: 667px) {
+      .swiper { height: 80vh; }
+    }
+
+    /* Ajuste das safe areas */
+    body {
+      padding-top: env(safe-area-inset-top, 20px); /* Para iPhones mais recentes com notch */
+      padding-bottom: env(safe-area-inset-bottom, 20px); /* Para iPhones mais recentes com notch */
+    }
+
+    /* Certificar-se de que o conteúdo vai cobrir a tela sem cortar em dispositivos pequenos */
     .swiper-slide {
       display: flex;
       align-items: center;
       justify-content: center;
       background: #fff;
     }
-
-    .swiper-slide video,
-    .swiper-slide img {
+    .swiper-slide video, .swiper-slide img {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -49,7 +56,7 @@
 </head>
 <body>
 
-  <!-- Música de fundo -->
+  <!-- Áudio -->
   <audio id="bg-music" loop>
     <source src="musica/Paramore-Tell_Me_How_Official_Audio.mp3" type="audio/mpeg">
     Seu navegador não suporta áudio HTML5.
@@ -87,13 +94,19 @@
 
   <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
   <script>
-    // Atualiza a variável --vh com a altura real da viewport (resolve Android)
-    function setVh() {
-      const vh = window.innerHeight * 0.01;
+    // Ajuste da altura para dispositivos iOS antigos e novos
+    function updateSwiperHeight() {
+      const vh = window.innerHeight * 0.01;  // 1% da altura da janela
       document.documentElement.style.setProperty('--vh', `${vh}px`);
+      const swiper = document.querySelector('.swiper');
+      if (swiper) {
+        swiper.style.height = `calc(var(--vh) * 100)`;  // Aplica o cálculo da altura
+      }
     }
-    window.addEventListener('resize', setVh);
-    setVh();
+
+    // Atualiza a altura quando a página carrega e ao redimensionar
+    window.addEventListener('load', updateSwiperHeight);
+    window.addEventListener('resize', updateSwiperHeight);
 
     // Inicializa o Swiper
     const swiper = new Swiper('.swiper', {
@@ -101,13 +114,16 @@
       loop: false,
     });
 
-    // Música de fundo
+    // Áudio de fundo
     const music = document.getElementById('bg-music');
     music.volume = 0.8;
+
     let musicStarted = false;
     swiper.on('slideChange', () => {
       if (!musicStarted) {
-        music.play().catch(() => {});
+        music.play().catch(e => {
+          console.log('Interação necessária para iniciar áudio:', e);
+        });
         musicStarted = true;
       }
     });
