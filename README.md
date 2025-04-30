@@ -1,4 +1,7 @@
-# Cartão de Aniversário Interativo
+# Cartão de Aniversário Interativo (Mobile)
+
+OBS: Se você estiver em um navegador Desktop, use algum plugin que simule tela de dispositivo mobile. Recomendo o Responsive Viewer.
+
 Este é um cartão digital de feliz aniversário desenvolvido especialmente para uma amiga querida. O projeto foi feito com carinho, usando vídeos, imagens e transições suaves via SwiperJS, proporcionando uma experiência interativa e personalizada com a cara dela.
 
 Funcionalidades
